@@ -1,0 +1,27 @@
+<!-- Introducing Components-->
+<div id="root"></div>
+<!-- Get React and ReactDOM from CDN -->
+<script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+<!-- Need Babel Standalone to comiple JSX s.t. browser understands -->
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script type="text/babel">
+  // getting root element to anchor
+  const rootElement = document.getElementById('root');
+
+  // Message is a functional React component
+  // capitalization is important to indicate that this is a component
+  // recall, children is content between opening and closing tags
+  const Message = (props) => {
+    return (<div>{props.children}</div>);
+  };
+
+  const element= (
+    <div className='container'>
+      <Message> Hello World </Message>
+      <Message> Goodbye World </Message>
+    </div>
+  );
+  // rendering the React element
+  ReactDOM.render(element, rootElement);
+</script>

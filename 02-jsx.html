@@ -1,0 +1,25 @@
+<!-- Now in React with JSX-->
+<div id="root"></div>
+<!-- Get React and ReactDOM from CDN -->
+<script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+<!-- Need Babel Standalone to comiple JSX s.t. browser understands -->
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script type="text/babel">
+  // getting root element to anchor
+  const rootElement = document.getElementById('root');
+  // using JSX
+  const content='Hello World';
+  const myClassName='container';
+  const props={
+    className: 'container',
+    children: 'Hello World'
+  }
+  // holding content and class name in props object and using object expansion
+  // can define className or children before or after props
+  // order matters, so later override prior
+  // self-closing tag
+  const element = <div {...props}/>;
+  // rendering the React element
+  ReactDOM.render(element, rootElement);
+</script>

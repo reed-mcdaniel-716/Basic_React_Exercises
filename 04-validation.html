@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title> 04-validation </title>
+  </head>
+  <!-- Using PropTypes to validate passed in props -->
+  <body>
+  <!-- Get React and ReactDOM from CDN -->
+  <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+  <!-- Need Babel Standalone to comiple JSX s.t. browser understands -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <!-- For PropTypes which now reside in their own package outside of React -->
+  <script src="https://unpkg.com/prop-types@15.6/prop-types.js"></script>
+
+  <div id='root'></div>
+
+  <script type="text/babel">
+    function SayHello(props){
+      return (
+        <div>
+          Hello {props.firstName} {props.lastNane}!
+        </div>
+      );
+    };
+
+    SayHello.propTypes= {
+      firstName: PropTypes.string.isRequired,
+      lastNane: PropTypes.string.isRequired
+    };
+
+    ReactDOM.render(<SayHello firstName={true} />, document.getElementById('root'));
+  </script>
+  </body>
+</html>

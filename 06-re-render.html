@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <!-- Re-rendering elements on change -->
+    <title> 06-re-render </title>
+  </head>
+  <body>
+    <!-- anchor element -->
+    <div id='root'></div>
+
+    <!-- Get React and ReactDOM from CDN -->
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <!-- Need Babel Standalone to comiple JSX s.t. browser understands -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- For PropTypes which now reside in their own package outside of React -->
+    <script src="https://unpkg.com/prop-types@15.6/prop-types.js"></script>
+
+    <script type="text/babel">
+      // anchor element
+      const rootElement= document.getElementById('root');
+      // function to render current time
+      function tick(){
+        // getting current time
+        const time = new Date().toLocaleTimeString();
+        const element = (
+        // React automatically keeps focus on choosen (clicked) input
+        // When React re-renders it only updates what is changing
+        // makes React more efficient
+          <div>
+            It is <br/>
+            <input value={time} readOnly/>
+            <input value={time} readOnly/>
+          </div>
+        );
+
+        ReactDOM.render(element, rootElement);
+      }
+      tick();
+      // updates every 1000ms or 1 second
+      setInterval(tick, 1000);
+    </script>
+  </body>
+</html>

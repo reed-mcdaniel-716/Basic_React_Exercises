@@ -1,0 +1,30 @@
+<!-- Vanilla HTML and JavaScript -->
+<div id="root1"></div>
+<!-- Inline js script -->
+<script type="text/javascript">
+  // getting root element to anchor
+  const rootElement1 = document.getElementById('root1');
+  // creating a div in the html document referenced i.e. this file
+  const element1 = document.createElement('div');
+  // add text to newly created element div
+  element1.textContent = 'Hello World';
+  // adding class to element div
+  element1.className= 'container';
+  // add element div to html as a child of root div
+  rootElement1.appendChild(element1);
+</script>
+
+<!-- Now in React without JSX-->
+<div id="root2"></div>
+<!-- Get React and ReactDOM from CDN -->
+<script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+<script type="text/javascript">
+  // getting root element to anchor
+  const rootElement2 = document.getElementById('root2');
+  // creating a React element
+  // alternative to using JSX
+  const element2 = React.createElement('div',{className:'container'},'Hello World');
+  // rendering the React element
+  ReactDOM.render(element2, rootElement2);
+</script>

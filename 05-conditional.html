@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <!-- Conditional Rendering -->
+    <title> 05-conditional </title>
+  </head>
+  <body>
+    <!-- anchor element -->
+    <div id='root'></div>
+    <!-- Get React and ReactDOM from CDN -->
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <!-- Need Babel Standalone to comiple JSX s.t. browser understands -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- For PropTypes which now reside in their own package outside of React -->
+    <script src="https://unpkg.com/prop-types@15.6/prop-types.js"></script>
+
+    <script type="text/babel">
+      // functional component
+      function Message ({message}){
+        // using ternary operator as js interpolation can only contain a single statement i.e. no if else
+        // if message is truthy, print it else print "No Message"
+        return <div>{(message ? <div>{message}</div> : <div> No Message </div>)}</div>;
+      }
+
+      ReactDOM.render(<Message message={'Hello!'} />, document.getElementById('root'));
+    </script>
+  </body>
+</html>
