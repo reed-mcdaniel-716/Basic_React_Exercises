@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <!-- Re-rendering elements on change -->
-    <title> 06-re-render </title>
+    <title> 08-event-handlers </title>
   </head>
   <body>
     <!-- anchor element -->
@@ -25,7 +25,7 @@
       // React has a synthetic event system which allows React to use the same event system regardless of the platform
       // function for button click
       function increment(){
-        setState({eventCount:eventCount+1});
+        setState({eventCount: state.eventCount+1});
       }
       // function for typing username
       function updateUsername(event){
@@ -44,7 +44,19 @@
         );
       }
 
-      ReactDOM.render(<App />, document.getElementById('root'));
+      function renderApp(){
+        ReactDOM.render(<App />, document.getElementById('root'));
+      }
+
+      // uncommon but can implement your own state handling for a functional component
+      function setState(newState){
+        // assign newState object to state object
+        Object.assign(state, newState);
+        // re-render App
+        renderApp();
+      }
+
+      renderApp();
     </script>
   </body>
 </html>

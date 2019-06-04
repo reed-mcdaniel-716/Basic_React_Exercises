@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <!-- Re-rendering elements on change -->
+    <title> 10-memory-leak </title>
+  </head>
+  <body>
+
+    <!-- anchor element -->
+    <div id='root'></div>
+
+    <!-- Get React and ReactDOM from CDN -->
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <!-- Need Babel Standalone to comiple JSX s.t. browser understands -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- For PropTypes which now reside in their own package outside of React -->
+    <script src="https://unpkg.com/prop-types@15.6/prop-types.js"></script>
+
+    <script type="text/babel">
+      // making a class component
+      class StopWatch extends React.Component{
+        /* The setInterval() method, offered on the Window and Worker interfaces,
+        repeatedly calls a function or executes a code snippet, with a fixed time delay between each call.
+        It returns an interval ID which uniquely identifies the interval,
+        so you can remove it later by calling clearInterval(). */
+        constructor(props){
+          super(props);
+          this.state={
+            lapse: 0,
+            running: false
+          };
+          this.handleRunClick=this.handleRunClick.bind(this);
+          this.handleClearClick=this.handleClearClick.bind(this);
+        }
+
+        handleRunClick(){
+          //alert('Handling run click...');
+          const startTime= Date.now()- this.state.lapse;
+          this.setState((state) => {
+            if(state.running){
+              clearInterval(this.timer);
+            } else {
+              this.timer= setInterval(()=> this.setState({lapse: Date.now()-startTime}));
+            }
+
+            return {running: !state.running}
+          });
+        }
+
+        handleClearClick(){
+          clearInterval(this.timer);
+          this.setState({lapse: 0, running: false});
+        }
+        // added to clearInterval when component is unmounted (i.e. removed from DOM)
+        componentWillUnmount(){
+          clearInterval(this.timer);
+        }
+
+        render(){
+          // de-structured assignment
+          const {lapse, running}= this.state;
+          const buttonStyles= {
+            border: '1px solid #ccc',
+            background: '#fff',
+            fontSize: '2em',
+            padding: 15,
+            margin: 5,
+            width: 200
+          };
+
+          return (
+            <div style={{textAlign: 'center'}}>
+              <label style={{fontSize:'5em', display:'block'}}>{lapse}ms</label>
+              <button name="start button" style={buttonStyles} type="button" onClick={this.handleRunClick}>
+                {(running ? 'Stop' : 'Start')}
+              </button>
+              <button name="clear button" style={buttonStyles} type="button" onClick={this.handleClearClick}>Clear</button>
+            </div>
+          );
+        }
+      }
+      const element= <StopWatch />;
+      ReactDOM.render(element, document.getElementById('root'));
+    </script>
+  </body>
+</html>
