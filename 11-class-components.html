@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <!-- Re-rendering elements on change -->
+    <!-- Creating a class component -->
     <title> 11-class-components </title>
   </head>
   <body>
@@ -29,9 +29,12 @@
           this.handleClick=this.handleClick.bind(this);
         }
 
-        // check docs... why doesn't this work?
+        // got this from docs on lifecycle and state
+        // https://reactjs.org/docs/state-and-lifecycle.html
         handleClick(){
-          this.setState((state) => {count: state.count + 1});
+          this.setState((state, props) => ({
+            count: state.count + 1
+          }));
         }
 
         render(){

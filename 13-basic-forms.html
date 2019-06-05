@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <!-- Basic Forms -->
+    <title> 13-basic-forms </title>
+  </head>
+  <body>
+
+    <!-- anchor element -->
+    <div id='root'></div>
+
+    <!-- Get React and ReactDOM from CDN -->
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <!-- Need Babel Standalone to comiple JSX s.t. browser understands -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- For PropTypes which now reside in their own package outside of React -->
+    <script src="https://unpkg.com/prop-types@15.6/prop-types.js"></script>
+
+    <script type="text/babel">
+      // making a class component
+      class NameForm extends React.Component {
+        constructor(props){
+          super(props);
+          this.handleSubmit=this.handleSubmit.bind(this);
+        }
+
+        handleSubmit(event){
+          // keeps page from automatically refreshing when submit button is clicked
+          event.preventDefault();
+          // regular HMTL
+          // look through to find all parts you can extract
+          console.log({target: event.target});
+          // regular HTML
+          // index 0 is the input, whose value is whatever was typed and submitted
+          console.log(event.target[0].value);
+          // regular HTML
+          // another way to access the information
+          console.log(event.target.elements.username.value);
+          // React specific
+          // getting inputNode value
+          console.log(this.inputNode.value);
+        }
+
+        render(){
+          return (
+          // For the ref property, the function receives the React component instance or HTML DOM element (aka. node)
+          // as its argument, which can be stored and accessed elsewhere
+          // here it is assigned to this.inputNode
+            <form onSubmit={this.handleSubmit}>
+              <label htmlFor="input-field">Name: </label>
+              <input id="input-field" type="text" name="username" ref={(node) => this.inputNode=node}/>
+              <button type="submit" name="submit-button">Submit</button>
+            </form>
+          );
+        }
+      }
+      ReactDOM.render(<NameForm />, document.getElementById('root'));
+    </script>
+  </body>
+</html>

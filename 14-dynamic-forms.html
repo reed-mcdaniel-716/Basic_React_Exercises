@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <!-- Dynamic Forms with real-time input validation -->
+    <title> 14-dynamic-forms </title>
+  </head>
+  <body>
+
+    <!-- anchor element -->
+    <div id='root'></div>
+
+    <!-- Get React and ReactDOM from CDN -->
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <!-- Need Babel Standalone to comiple JSX s.t. browser understands -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- For PropTypes which now reside in their own package outside of React -->
+    <script src="https://unpkg.com/prop-types@15.6/prop-types.js"></script>
+
+    <script type="text/babel">
+      // making a class component
+      class NameForm extends React.Component {
+        constructor(props){
+          super(props);
+          this.state={
+            error: null
+          };
+          this.handleSubmit=this.handleSubmit.bind(this);
+          this.handleChange=this.handleChange.bind(this);
+        }
+
+        // want to start with button disabled
+        // error state is set, even though the error message is an empty string, so button will be disabled
+        componentDidMount(){
+          this.setState({
+            error: this.props.getErrorMessage('')
+          });
+        }
+
+        handleSubmit(event){
+          // keeps page from automatically refreshing when submit button is clicked
+          event.preventDefault();
+          const value= event.target.elements.username.value;
+          const error= this.props.getErrorMessage(value);
+          if (error){
+            alert(`error: ${error}`);
+          } else {
+            alert(`success: ${value}`);
+          }
+        }
+
+        handleChange(event){
+          // de-structured assignment
+          const {value}= event.target;
+          this.setState({
+            error: this.props.getErrorMessage(value)
+          });
+        }
+
+        render(){
+          // de-structured assignment
+          const {error}= this.state;
+          return (
+          // For the ref property, the function receives the React component instance or HTML DOM element (aka. node)
+          // as its argument, which can be stored and accessed elsewhere
+          // here it is assigned to this.inputNode
+          // conditionally rendering error message based on whether error is set or not
+            <form onSubmit={this.handleSubmit}>
+              <label htmlFor="input-field">Name: </label>
+              <input id="input-field" type="text" name="username" onChange={this.handleChange}/>
+              {error ? <div style={{color:'red'}}>{error}</div> : null}
+              <button type="submit" name="submit-button" disabled={Boolean(error)}>Submit</button>
+            </form>
+          );
+        }
+      }
+      // get error message uses and anonymous function to validate the value submitted
+      // only way I could get this to work
+      ReactDOM.render(<NameForm getErrorMessage={(value) => {
+        if(value.length < 3){
+          return `Value must be at least 3 characters, but has only ${value.length}`;
+        }
+        if(!value.includes('s')){
+          return 'Value must include the letter "s" but does not';
+        }
+        return null;
+      }}/>, document.getElementById('root'));
+    </script>
+  </body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <!-- Controlling form values by syncing values across all three input types-->
+    <title> 15-control-form-values </title>
+  </head>
+  <body>
+
+    <!-- anchor element -->
+    <div id='root'></div>
+
+    <!-- Get React and ReactDOM from CDN -->
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <!-- Need Babel Standalone to comiple JSX s.t. browser understands -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- For PropTypes which now reside in their own package outside of React -->
+    <script src="https://unpkg.com/prop-types@15.6/prop-types.js"></script>
+
+    <script type="text/babel">
+      // making a class component
+      class FancyForm extends React.Component {
+        // static methods and variables belong to the class not the instances, much like in Java
+        static availableOptions= ['apple','grape','cherry','orange','pear','peach'];
+
+        constructor(props){
+          super(props);
+
+          this.state={
+            multiline: '',
+            commaSeparated: '',
+            multiSelect: []
+          };
+
+          this.handleCommaSeparatedChange=this.handleCommaSeparatedChange.bind(this);
+          this.handleMultilineChange=this.handleMultilineChange.bind(this);
+          this.handleMultiSelectChange=this.handleMultiSelectChange.bind(this);
+        }
+
+        // need onChange handlers because when values are set at the element level as they are below, user input is disregarded without them
+        handleCommaSeparatedChange(event){
+          // de-structured assignment
+          const {value}= event.target;
+          // splitting common-separated string into an array
+          // for Boolean filtering see: https://stackoverflow.com/questions/30016773/javascript-filter-true-booleans/31523737
+          const allVals= value.split(',').map(v => v.trim()).filter(Boolean);
+          // calling setState with each change in field so that value rendered updates accordingly
+          this.setState({
+            commaSeparated: value,
+            // formatting comma-separated input into multiline input
+            multiline: allVals.join('\n'),
+            // multi-select can only accept the pre-defined available options
+            multiSelect: allVals.filter(v => FancyForm.availableOptions.includes(v))
+          });
+          //console.log('handleCommaSeparatedChange');
+        }
+
+        handleMultilineChange(event){
+          // de-structured assignment
+          const {value}= event.target;
+          // splitting common-separated string into an array
+          // for Boolean filtering see: https://stackoverflow.com/questions/30016773/javascript-filter-true-booleans/31523737
+          const allVals= value.split('\n').map(v => v.trim()).filter(Boolean);
+          // calling setState with each change in field so that value rendered updates accordingly
+          this.setState({
+            commaSeparated: allVals.join(','),
+            // formatting comma-separated input into multiline input
+            multiline: value,
+            // multi-select can only accept the pre-defined available options
+            multiSelect: allVals.filter(v => FancyForm.availableOptions.includes(v))
+          });
+          //console.log('handleMultilineChange');
+        }
+
+        handleMultiSelectChange(event){
+          // can see all available elements of the event.target object
+          // console.log({target: event.target});
+          // which options have been selected
+          // console.log(event.target.selectedOptions);
+          // console.log(typeof event.target.selectedOptions);
+          // need to cast array-like object returned to an array
+          const allVals= Array.from(event.target.selectedOptions).map(o => o.value);
+          this.setState({
+            commaSeparated: allVals.join(','),
+            multiline: allVals.join('\n'),
+            multiSelect: allVals
+          });
+          //console.log('handleMultiSelectChange');
+        }
+
+        render(){
+          const {commaSeparated, multiline, multiSelect} = this.state;
+          return (
+            <form>
+              <h3> Synchronized Fuit Lists </h3>
+              <div>
+                <label htmlFor="comma-separated">Comma Separated Values:</label>
+                <br/>
+                <input id="comma-separated" type="text" name="comma-separated" onChange={this.handleCommaSeparatedChange} value={commaSeparated}/>
+              </div>
+              <div>
+                <label htmlFor="multiline">Multiline Values:</label>
+                <br />
+                <textarea id="multiline" name="multiline" rows={FancyForm.availableOptions.length} onChange={this.handleMultilineChange} value={multiline}/>
+              </div>
+              <div>
+                <label htmlFor="multi-select">Multi-Select Values:</label>
+                <br />
+                <select id="multi-select" name="multi-select" multiple size={FancyForm.availableOptions.length} onChange={this.handleMultiSelectChange} value={multiSelect}>
+                  <option value="apple">apple</option>
+                  <option value="grape">grape</option>
+                  <option value="cherry">cherry</option>
+                  <option value="orange">orange</option>
+                  <option value="pear">pear</option>
+                  <option value="peach">peach</option>
+                </select>
+                <br />
+              </div>
+            </form>
+          );
+        }
+      }
+      // get error message uses and anonymous function to validate the value submitted
+      // only way I could get this to work
+      ReactDOM.render(<FancyForm />, document.getElementById('root'));
+    </script>
+  </body>
+</html>
