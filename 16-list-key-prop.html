@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <!-- Using the key prop for lists -->
+    <!-- Using the key prop for lists to uniquely identify each list item-->
     <title> 16-list-key-prop </title>
   </head>
   <body>
@@ -28,14 +28,49 @@
           {id: 'g', value: 'grape'},
           {id: 'p', value: 'pear'}
         ]
+
         constructor(props){
           super(props);
+
+          this.state={
+            items: []
+          };
+
+          this.addItem=this.addItem.bind(this);
+          this.removeItem=this.removeItem.bind(this);
+        }
+
+        addItem(){
+          // set state items array to have prior items and those in allItems not in state
+          this.setState((state, props) => ({
+            items:[...state.items, App.allItems.find((i) => !state.items.includes(i))]
+          }));
+        }
+
+        removeItem(item){
+          // remove item passed in from state items array
+          this.setState((state, props) => ({
+            items: state.items.filter((i) => i !== item)
+          }));
         }
 
         render(){
+          const {items}= this.state;
           return (
+          // no return in JS injected code as they are to be a single expression and return value is implicit
+          // to see value, see what happens when key is removed from list items
             <div>
-              {App.allItems.map()}
+              <label htmlFor="add-button">Click to add items</label>
+              <button type="button" name="add-button" disabled={items.length >= App.allItems.length} onClick={this.addItem}>+</button>
+              {items.map((i, index) => (
+                  <div>
+                    <label htmlFor="subtract-button"></label>
+                    <button type="button" name="subtract-button" onClick={() => this.removeItem(i)}>-</button>
+                    {i.value}:
+                    <input />
+                  </div>
+                )
+              )}
             </div>
           );
         }
