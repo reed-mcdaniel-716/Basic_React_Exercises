@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <!-- Using the key prop for lists -->
+    <title> 16-list-key-prop </title>
+  </head>
+  <body>
+
+    <!-- anchor element -->
+    <div id='root'></div>
+
+    <!-- Get React and ReactDOM from CDN -->
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <!-- Need Babel Standalone to comiple JSX s.t. browser understands -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- For PropTypes which now reside in their own package outside of React -->
+    <script src="https://unpkg.com/prop-types@15.6/prop-types.js"></script>
+
+    <script type="text/babel">
+      // making a class component
+      class App extends React.Component {
+        // static methods and variables belong to the class not the instances, much like in Java
+        static allItems=[
+          {id: 'a', value: 'apple'},
+          {id: 'o', value: 'orange'},
+          {id: 'g', value: 'grape'},
+          {id: 'p', value: 'pear'}
+        ]
+        constructor(props){
+          super(props);
+        }
+
+        render(){
+          return (
+            <div>
+              {App.allItems.map()}
+            </div>
+          );
+        }
+      }
+      ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+  </body>
+</html>
