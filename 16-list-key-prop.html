@@ -63,7 +63,7 @@
               <label htmlFor="add-button">Click to add items</label>
               <button type="button" name="add-button" disabled={items.length >= App.allItems.length} onClick={this.addItem}>+</button>
               {items.map((i, index) => (
-                  <div>
+                  <div key={i.id}>
                     <label htmlFor="subtract-button"></label>
                     <button type="button" name="subtract-button" onClick={() => this.removeItem(i)}>-</button>
                     {i.value}:
