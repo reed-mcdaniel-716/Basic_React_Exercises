@@ -17,6 +17,8 @@
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <!-- For PropTypes which now reside in their own package outside of React -->
     <script src="https://unpkg.com/prop-types@15.6/prop-types.js"></script>
+    <!-- For jQuery AJAX calls -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
     <script type="text/babel">
       // making a class component
@@ -25,11 +27,20 @@
         constructor(props){
           super(props);
 
-          this.state={};
+          this.state={
+            company: undefined
+          };
+        }
+
+        componentDidMount(){
+          $.post(
+            
+          );
         }
 
         render(){
           return (
+            {this.state.company || 'Unknown'}
           );
         }
       }
@@ -40,7 +51,7 @@
         <div>
           <div>
             {`@${username} works at`}
-            ... some company
+            <UserCompany username={username} />
           </div>
         </div>
       );
