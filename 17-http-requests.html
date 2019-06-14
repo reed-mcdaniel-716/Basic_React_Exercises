@@ -28,35 +28,53 @@
           super(props);
 
           this.state={
-            company: undefined
+            company: undefined,
+            loaded: false
           };
         }
 
         componentDidMount(){
-          $.post(
-            
-          );
+          // making requests to GitHub API for the graphql repo
+          // help from https://stackoverflow.com/questions/7100294/json-post-with-customized-httpheader-field
+          // Token generated via GitHub developer settings
+          // graphql query as string
+          // help from https://www.tutorialspoint.com/graphql/graphql_jquery_integration.htm
+          $.ajax({
+              url: "https://api.github.com/graphql",
+              type: 'post',
+              data: JSON.stringify({
+                query: `{
+                  user(login: "${this.props.username}") {
+                    company
+                  }
+                }`
+              }),
+              headers: {
+                Authorization: `bearer f1360d9213a2426e91a2ccc12391ec6b6ca60613`
+              }
+            }).then((response) => this.setState({company: response.data.user.company, loaded: true}));
         }
 
         render(){
+          // loaded added so there is a placholder while the API call is completing
           return (
-            {this.state.company || 'Unknown'}
+            (this.state.loaded ? this.state.company || 'Unknown' : "loading...")
           );
         }
       }
 
-      const username = "reed";
+      const username = "reed-mcdaniel-716";
 
       const element= (
         <div>
           <div>
-            {`@${username} works at`}
+            {`@${username} works at `}
             <UserCompany username={username} />
           </div>
         </div>
       );
 
-      ReactDOM.render(<UserCompany />, document.getElementById('root'));
+      ReactDOM.render(element, document.getElementById('root'));
     </script>
   </body>
 </html>
